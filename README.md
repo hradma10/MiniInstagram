@@ -2,7 +2,7 @@
 
 Webová aplikace zaměřená na sdílení fotografií a interakci mezi uživateli. Nabízí správu profilu, sledování ostatních účtů, lajkování a komentování příspěvků a personalizovaný přehled obsahu.
 
-## Použité technologie a architektura
+## Použité technologie
 
 - **Backend:** C#, ASP.NET Core MVC (.NET 8+)
 - **ORM a databáze:** Entity Framework Core, SQLite
@@ -32,12 +32,12 @@ Webová aplikace zaměřená na sdílení fotografií a interakci mezi uživatel
 
 1. **Klonování repozitáře:**
    ```bash
-   git clone 
+   git clone https://github.com/hradma10/MiniInstagram
    cd MiniInstagram
    ```
 
 2. **Konfigurace cest:**
-   V `MiniInstagramASP/appsettings.json`:
+   V `MiniInstagramASP/appsettings.json` nahraďte následujicí cesty:
    ```json
     {
       "ConnectionStrings": {
