@@ -1,0 +1,15 @@
+﻿@model MiniInstagramEF.entities.Comment
+
+<form method="post"
+      asp-controller="Comment"
+      asp-action="ToggleCommentLike"
+      asp-route-id="@Model.Id"
+      onsubmit="return commentLike(event, @Model.Id)">
+    <button id="like-btn-@Model.Id" class="btn btn-sm btn-outline-danger me-2"
+            @( (bool)ViewData["Disabled"] ? "disabled" : "" )>
+        <span id="like-icon-comment-@Model.Id" class="like-icon">
+            @(Model.LikedBy.Any(u => u.Id == (int?)ViewData["CurrentUserId"]) ? "❤" : "♡")
+        </span>
+        <span id="likes-comment-@Model.Id">@Model.LikedBy.Count</span>
+    </button>
+</form>

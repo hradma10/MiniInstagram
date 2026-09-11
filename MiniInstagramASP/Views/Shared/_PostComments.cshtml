@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+@model MiniInstagramEF.entities.Post
+
+<div class="d-flex flex-column gap-3">
+    @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+    {
+        <div class="d-flex flex-column bg-light rounded p-2 shadow-sm">
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <strong>
+                    <a href="/account/@comment.AuthorId" class="text-decoration-none text-primary">
+                        @comment.Author.Username
+                    </a>
+                </strong>
+                <small class="text-muted">@comment.CreatedAt.ToString("g")</small>
+            </div>
+            <p class="mb-0">@comment.Text</p>
+            @{
+                var viewDataLike = new ViewDataDictionary(
+                    new EmptyModelMetadataProvider(),
+                    ViewData.ModelState)
+                {
+                    ["CurrentUserId"] = ViewData["CurrentUserId"],
+                    ["WithComments"] = ViewData["WithComments"],
+                    ["Disabled"] = ViewData["CurrentUserId"] == null
+                };
+            }
+
+            <div class="d-flex justify-content-between align-items-center pt-2">
+                <div class="d-flex align-items-center gap-2">
+                    @await Html.PartialAsync("_LikeButtonComment", comment, viewDataLike)
+                </div>
+
+                @if (comment.AuthorId == (ViewData["CurrentUserId"] as int?))
+                {
+                    <form asp-controller="Comment"
+                          asp-action="RemoveComment"
+                          asp-route-id="@comment.Id"
+                          method="post"
+                          onsubmit="deleteComment(event, @comment.PostId); return confirm('Opravdu chcete smazat tento komentář?');"
+                          class="d-inline-block">
+                        <button type="submit"
+                                class="btn btn-sm btn-outline-danger border-0"
+                                title="Smazat komentář">
+                            🗑️
+                        </button>
+                    </form>
+                }
+            </div>
+
+
+        </div>
+    }
+</div>

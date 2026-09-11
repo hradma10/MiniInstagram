@@ -1,0 +1,36 @@
+﻿@using MiniInstagramEF.entities
+@model MiniInstagramEF.entities.User
+
+<div class="d-flex flex-column gap-3">
+    @foreach (var comment in Model.Comments?.OrderByDescending(c => c.CreatedAt) ?? Enumerable.Empty<Comment>())
+    {
+        var post = comment.Post;
+        var author = post?.Author;
+
+        if (post == null || author == null)
+        {
+            continue;
+        }
+
+        <div class="d-flex flex-column bg-white rounded-3 p-3 shadow-sm border">
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <strong>
+                    <a href="/account/@author.Id" class="text-decoration-none text-primary">
+                        @author.Username -
+                        @{
+                            var postText = post.Text ?? "";
+                            var preview = postText.Length > 50 ? postText[..50] + "…" : postText;
+                        }
+                        @preview
+                    </a>
+                </strong>
+                <small class="text-muted">
+                    @(comment.CreatedAt.ToString("g") ?? "[unknown]")
+                </small>
+            </div>
+
+            <p class="mb-0">@comment.Text</p>
+        </div>
+    }
+
+</div>

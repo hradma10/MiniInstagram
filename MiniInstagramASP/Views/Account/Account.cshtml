@@ -1,0 +1,140 @@
+﻿@model AccountViewModel
+
+@{
+    ViewData["Title"] = "Účet";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow-sm p-3 mb-4 position-relative">
+        <h3 class="card-title">@Model.User.FirstName @Model.User.LastName</h3>
+        <p class="text-muted">@Model.User.Username</p>
+
+        <p class="">Following: <span id="user-following-count-@Model.User.Id">@Model.User.Following.Count</span></p>
+        <p class="">Followers: <span id="user-followers-count-@Model.User.Id">@Model.User.Followers.Count</span></p>
+        
+        
+        @if (Model.OwnAccount)
+        {
+            <div class="flex-row gap-2">
+                <a asp-area="Identity" 
+                   asp-page="/Account/Manage/ChangePassword" 
+                   class="btn btn-primary">
+                    Změna hesla
+                </a>
+            
+                <a asp-controller="Account" 
+                   asp-action="EditAccountDetails" 
+                   class="btn btn-primary">
+                    Upravit účet
+                </a>
+            </div>
+        }
+        else if (Model.LoggedUserId != null)
+        {
+            <form method="post"
+                  asp-controller="Account"
+                  asp-action="ToggleFollow"
+                  asp-route-id="@Model.User.Id"
+                  asp-route-account="true"
+                  onsubmit="return followUser(event, @Model.User.Id, true)"
+                  class="position-absolute top-0 end-0 m-3">
+
+                <button name="follow-btn-@Model.User.Id"
+                        class="btn btn-sm btn-outline-primary">
+
+                    @(Model.User.Followers.Any(u => u.Id == Model.LoggedUserId) 
+                        ? "Unfollow" 
+                        : "Follow")
+                </button>
+            </form>
+        }
+    </div>
+
+
+    <div class="card p-3 mb-4">
+        <span class="text-muted">Něco o mě</span>
+        @Model.User.Description
+    </div>
+    
+    
+    <ul class="nav nav-tabs mb-3" id="accountTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts"
+                    type="button" role="tab">Posty</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments"
+                    type="button" role="tab">Komentáře</button>
+        </li>
+    </ul>
+    
+    <div class="tab-content">
+
+    <div class="tab-pane fade show active" id="posts" role="tabpanel">
+        <h4>Posty</h4>
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+            @foreach (var post in Model.User.Posts.OrderByDescending(p => p.ReleaseDate))
+            {
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <a href="/posts/load/@post.Id?full=true">
+                            <img src="/image/@post.ImgPath" class="card-img-top img-fluid" alt="post">
+                        </a>
+                        <div class="card-body p-2">
+                            <small class="text-muted">@post.ReleaseDate.ToString("g")</small>
+                        </div>
+
+                        @if (Model.OwnAccount)
+                        {
+                            <div class="d-flex justify-content-end gap-2">
+                                <a asp-controller="Post"
+                                   asp-action="Edit"
+                                   asp-route-id="@post.Id"
+                                   class="d-inline-block ms-2">
+                                    <span class="btn btn-sm btn-outline-info border-0">✏️</span>
+                                </a>
+                                <form asp-controller="Post"
+                                      asp-action="Delete"
+                                      asp-route-id="@post.Id"
+                                      method="post"
+                                      onsubmit="return confirm('Opravdu chcete smazat tento příspěvek?');"
+                                      class="d-inline-block ms-2">
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger border-0"
+                                            title="Smazat příspěvek">
+                                        🗑️
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="comments" role="tabpanel">
+        <h4>Komentáře</h4>
+
+        @if (Model.User.Comments.Count == 0)
+        {
+            <p class="text-muted">Nemáte žádné komentáře.</p>
+        }
+        else
+        {
+            <div class="list-group">
+                    @await Html.PartialAsync("_AccountComments", Model.User)
+            </div>
+        }
+    </div>
+
+</div>
+
+
+</div>
+@section Scripts
+{
+    <script src="~/js/post_actions.js"></script>
+}

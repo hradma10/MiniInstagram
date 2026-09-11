@@ -1,0 +1,49 @@
+﻿@model AccountEditModel
+@{
+    ViewData["Title"] = "Upravit účet";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <form id="editAccountForm" method="post">
+            <h3>Upravit</h3>
+            <hr />
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="FirstName" class="form-control" autocomplete="first-name" aria-required="true" value="@Model.FirstName" />
+                <label asp-for="FirstName">Jméno</label>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="LastName" class="form-control" autocomplete="last-name" aria-required="true" value="@Model.LastName"/>
+                <label asp-for="LastName">Přijmení</label>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Username" class="form-control" aria-required="true" value="@Model.Username"/>
+                <label asp-for="Username">Username</label>
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Age" class="form-control" type="number" aria-required="true" value="@Model.Age"/>
+                <label asp-for="Age">Věk</label>
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Tell us about yourself">@Model.Description</textarea>
+                <label asp-for="Description">Bio</label>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <button id="editSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Uložit</button>
+        </form>
+    </div>
+</div>

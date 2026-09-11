@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniInstagramEF", "MiniInstagramEF\MiniInstagramEF.csproj", "{D0772049-9DD7-4794-A51D-607FBF4D5B71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniInstagramASP", "MiniInstagramASP\MiniInstagramASP.csproj", "{886DA8CE-8685-41AE-859D-B27D333B788C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0772049-9DD7-4794-A51D-607FBF4D5B71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0772049-9DD7-4794-A51D-607FBF4D5B71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0772049-9DD7-4794-A51D-607FBF4D5B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0772049-9DD7-4794-A51D-607FBF4D5B71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{886DA8CE-8685-41AE-859D-B27D333B788C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{886DA8CE-8685-41AE-859D-B27D333B788C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{886DA8CE-8685-41AE-859D-B27D333B788C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{886DA8CE-8685-41AE-859D-B27D333B788C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

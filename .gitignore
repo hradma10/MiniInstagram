@@ -1,0 +1,41 @@
+## Build and output directories
+[Bb]in/
+[Oo]bj/
+out/
+publish/
+
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## JetBrains (Rider, ReSharper)
+.idea/
+*.DotSettings.user
+
+## Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## Databases & local data (SQLite)
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+## User secrets & local configuration
+appsettings*.local.json
+appsettings.Production.json
+
+## Archives & temp files
+*.zip
+*.tar.gz
+*.7z
+*.log
+*.tmp

@@ -1,0 +1,12 @@
+﻿@model MiniInstagramEF.entities.User
+
+<form method="post"
+      asp-controller="Account"
+      asp-action="ToggleFollow"
+      asp-route-id="@Model.Id"
+      onsubmit="return followUser(event, @Model.Id)">
+    
+    <button name="follow-btn-@Model.Id" class="btn btn-sm btn-outline-primary">
+        @(Model.Followers.Any(f => f.Id == (int) ViewData["CurrentUserId"]) ? "Unfollow" : "Follow")
+    </button>
+</form>

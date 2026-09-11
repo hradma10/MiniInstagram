@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+@model MiniInstagramEF.entities.Post
+
+<div id="post-@Model.Id" class="card mb-4 shadow-sm border-0 rounded">
+
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+            <strong>
+                <a href="/account/@Model.Author.Id" class="text-dark text-decoration-none">
+                    @Model.Author.Username
+                </a>
+            </strong>
+        </div>
+
+        @{
+            var viewDataFollow = new ViewDataDictionary(
+                new EmptyModelMetadataProvider(),
+                ViewData.ModelState)
+            {
+                ["CurrentUserId"] = ViewData["CurrentUserId"],
+                ["WithComments"] = ViewData["WithComments"]
+            };
+        }
+        @if (ViewData["CurrentUserId"] != null)
+        {
+            @await Html.PartialAsync("_FollowButton", Model.Author, viewDataFollow)
+        }
+    </div>
+
+    <img src="/image/@Model.ImgPath"
+         class="card-img-top img-fluid"
+         alt="post image" loading="lazy" />
+
+    <div class="card-body">
+
+        <div class="d-flex align-items-center gap-3 mb-3">
+            @{
+                var viewDataLike = new ViewDataDictionary(
+                    new EmptyModelMetadataProvider(),
+                    ViewData.ModelState)
+                {
+                    ["CurrentUserId"] = ViewData["CurrentUserId"],
+                    ["WithComments"] = ViewData["WithComments"],
+                    ["Disabled"] = ViewData["CurrentUserId"] == null
+                };
+            }
+
+            @await Html.PartialAsync("_LikeButton", Model, viewDataLike)
+
+            @if (!(bool)(ViewData["WithComments"] ?? false))
+            {
+                <a href="/posts/load/@Model.Id?full=true"
+                   class="btn btn-sm btn-outline-secondary">
+                    💬 <span>@Model.Comments.Count</span>
+                </a>
+
+            }
+            
+            @if (Model.AuthorId == (ViewData["CurrentUserId"] as int?) 
+                 && (bool)(ViewData["WithComments"] ?? false))
+            {
+                <a asp-controller="Post"
+                   asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="d-inline-block ms-2">
+                    <span class="btn btn-sm btn-outline-info border-0">✏️</span>
+                </a>
+            }
+            
+            
+            @if (Model.AuthorId == (ViewData["CurrentUserId"] as int?) 
+                 && (bool)(ViewData["WithComments"] ?? false))
+            {
+                <form asp-controller="Post"
+                      asp-action="Delete"
+                      asp-route-id="@Model.Id"
+                      method="post"
+                      onsubmit="return confirm('Opravdu chcete smazat tento příspěvek?');"
+                      class="d-inline-block ms-2">
+
+                    <button type="submit"
+                            class="btn btn-sm btn-outline-danger border-0"
+                            title="Smazat příspěvek">
+                        🗑️
+                    </button>
+                </form>
+            }
+
+            <span class="ms-auto text-muted small">@Model.ReleaseDate</span>
+        </div>
+
+        <p class="mb-2">@Model.Text</p>
+
+        @if ((bool)(ViewData["WithComments"] ?? false))
+        {
+            <div class="mt-3 pt-3 border-top">
+                @if (ViewData["CurrentUserId"] != null)
+                {
+                    <form method="post"
+                          asp-controller="Comment"
+                          asp-action="AddComment"
+                          onsubmit="return submitComment(event, @Model.Id)">
+                        <input type="text" name="Text"
+                               class="form-control mb-2"
+                               placeholder="Napište komentář"
+                               required/>
+
+                        <input type="hidden" name="PostId" value="@Model.Id"/>
+
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            Comment
+                        </button>
+                    </form>
+                }
+                <div id="comments_div-@Model.Id">
+                    @await Html.PartialAsync("_PostComments", Model)
+                </div>
+                
+            </div>
+        }
+    </div>
+</div>

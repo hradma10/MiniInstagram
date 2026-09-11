@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+@model SinglePostModel
+
+@{
+    ViewData["Title"] = "Post";
+}
+
+<div class="d-flex justify-content-center mt-3">
+    <div class="col-12 col-md-8 col-lg-6">
+        @{
+            var post = Model.Post;
+            var viewData = new ViewDataDictionary(
+                metadataProvider: new EmptyModelMetadataProvider(),
+                modelState: ViewData.ModelState)
+            {
+                ["CurrentUserId"] = Model.User?.Id,
+                ["WithComments"] = true
+            };
+            
+            @await Html.PartialAsync("_Post", post, viewData)
+        }
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/post_actions.js"></script>
+}
